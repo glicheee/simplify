@@ -11,8 +11,9 @@
   filter: saturate(2.5) brightness(0.65);
 }
 
-body:has(.starrynight-bg-container) #main .spicy-dynamic-bg:not(.StaticBackground),
-body:has(.glassify-bg .bg.animated) #main .spicy-dynamic-bg:not(.StaticBackground) {
+/* Body classes instead of body:has(); same specificity. See utils/pageStateClasses.ts. */
+body.SL_ThemeStarryNight #main .spicy-dynamic-bg:not(.StaticBackground),
+body:is(.SL_ThemeGlassifyAnimated, .__sl_never.__sl_never.__sl_never) #main .spicy-dynamic-bg:not(.StaticBackground) {
   display: none !important;
 }
 
@@ -231,10 +232,10 @@ aside:has(.spicy-dynamic-bg) .iHa_q9pq4un3VNRQgwTx {
 }
 
 /* Hide sidebar background when in fullscreen lyrics mode */
-body:has(#SpicyLyricsPage.Fullscreen) .Root__right-sidebar
+body:is(.SL_PageFullscreen, #__sl_never.__sl_never) .Root__right-sidebar
   aside:is(.NowPlayingView, .spicy-dynamic-bg-in-this)
   .spicy-dynamic-bg,
-body:has(#SpicyLyricsPage.Fullscreen) aside.NowPlayingView .spicy-dynamic-bg {
+body:is(.SL_PageFullscreen, #__sl_never.__sl_never) aside.NowPlayingView .spicy-dynamic-bg {
   display: none;
 }
 

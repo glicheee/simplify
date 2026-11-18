@@ -1,4 +1,5 @@
 import { createTooltip } from "../../utils/tooltip.ts";
+import { syncPageStateClasses } from "../../utils/pageStateClasses.ts";
 import fetchLyrics, { HoldsTemporaryUpload, ShowQueueLoader } from "../../utils/Lyrics/fetchLyrics.ts";
 import { LyricsQueueRetry } from "../../utils/Lyrics/LyricsQueueRetry.ts";
 import { SkeletonMarkup } from "../../utils/Lyrics/LyricsSkeleton.ts";
@@ -411,6 +412,7 @@ async function OpenPage(
   $lyricsContainerExists.set(true);
   PageView.IsOpened = true;
   setStockPlaybarPage(elem);
+  syncPageStateClasses();
 
   if (IsPIP) {
     elem?.classList.add("ForcedCompactMode");
@@ -489,6 +491,7 @@ async function DestroyPage() {
 
   PageContainer?.remove();
   setStockPlaybarPage(null);
+  syncPageStateClasses();
   removeLinesEvListener();
   (Object.keys(Tooltips) as (keyof typeof Tooltips)[]).forEach((key) => {
     Tooltips[key]?.destroy();

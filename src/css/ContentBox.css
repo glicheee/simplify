@@ -1546,6 +1546,53 @@
   opacity: 1;
 }
 
+/* Fullscreen: a small like button in the cover's top-right corner, level with the
+   view controls bar, instead of a large heart over the middle of the art. */
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header .MediaBox .Heart,
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header:not(:has(> .Timeline)) .MediaBox .Heart {
+  --HeartCornerSize: 9.5cqw;
+  /* Vertical centre of the view controls bar: top 7cqh + half its 9cqh height
+     (separate buttons). The heart shape's own centre sits at 51% of its box. */
+  --HeartBarCenter: calc(7cqh + 4.5cqh);
+  width: var(--HeartCornerSize);
+  top: calc(var(--HeartBarCenter) - var(--HeartCornerSize) * 0.51);
+  right: 3.5cqw;
+  left: auto;
+  margin: 0;
+  z-index: 2;
+}
+
+/* Grouped capsule: top 7cqh, height = button size 8.5cqh + padding 0.11x on each side. */
+#SpicyLyricsPage.Fullscreen.Exp_GroupedViewControls .ContentBox .NowBar .Header .MediaBox .Heart,
+#SpicyLyricsPage.Fullscreen.Exp_GroupedViewControls .ContentBox .NowBar .Header:not(:has(> .Timeline)) .MediaBox .Heart {
+  --HeartBarCenter: calc(7cqh + 8.5cqh * 1.22 / 2);
+}
+
+/* Fullscreen heart shape: a softer, plumper heart with a bold outline (the 22-unit
+   default reads as a hairline at corner size). The outline path itself is filled for
+   the liked state, so the ellipse fill group isn't needed here. */
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header .MediaBox .Heart #SpicyLyrics_HeartOutline path {
+  d: path("M500 841.7s-316.7-183.3-383.3-379.2C66.7 320.8 150 179.2 291.7 179.2c87.5 0 154.2 54.2 208.3 125 54.2-70.8 120.8-125 208.3-125 141.7 0 225 141.7 175 283.3-66.7 195.8-383.3 379.2-383.3 379.2z");
+  stroke-width: 64;
+  fill: transparent;
+  transition: stroke 0.25s, fill 0.25s, stroke-width 0.25s;
+}
+
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header .MediaBox .Heart #SpicyLyrics_HeartFill {
+  display: none;
+}
+
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header .MediaBox .Heart:not(.Filled):hover #SpicyLyrics_HeartOutline path {
+  fill: rgba(255, 255, 255, 0.25);
+}
+
+/* Liked: the heart turns pinkish red, outline and fill. */
+#SpicyLyricsPage.Fullscreen .ContentBox .NowBar .Header .MediaBox .Heart.Filled #SpicyLyrics_HeartOutline path {
+  stroke: #ff3366;
+  stroke-width: 92;
+  fill: #ff3366;
+}
+
 /* --- CompactMode/ForcedCompactMode styles, now independent of Fullscreen --- */
 
 #SpicyLyricsPage.CompactMode .ContentBox,

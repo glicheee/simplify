@@ -46,10 +46,10 @@ aside.NowPlayingView.spicy-dynamic-bg-in-this
   font-family: SpicyLyrics, "Noto Sans Georgian", "VazirmatnRegular", sans-serif !important;
 }
 
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container__scroll-node-child,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container__scroll-node-child-spacer,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container__scroll-node-child,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container__scroll-node-child-spacer {
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container__scroll-node-child,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container__scroll-node-child-spacer,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container__scroll-node-child,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container__scroll-node-child-spacer {
   display: none;
 }
 
@@ -679,16 +679,18 @@ button:has(#SpicyLyricsPageSvg):not(.main-genericButton-buttonActive, .main-gene
 }
 
 /* "Page Not Visible" fix */
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage),
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .KL8t9WB65UfUEPuTFAhO,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-content-view,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container__scroll-node,
-:is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) .main-view-container .div[data-overlayscrollbars-viewport] {
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)),
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .KL8t9WB65UfUEPuTFAhO,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-content-view,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container__scroll-node,
+:is(.SL_PageInMainView, #__sl_never) :is(.Root__main-view, :where(#main-view)) .main-view-container .div[data-overlayscrollbars-viewport] {
   height: 100% !important;
 }
 
-body:not(:has(.Root__main-view-overlay #SpicyLyricsPage:is(.Fullscreen)))
+/* Was body:not(:has(.Root__main-view-overlay #SpicyLyricsPage:is(.Fullscreen))); the
+   never-matching list keeps its (1,2,0) weight. See utils/pageStateClasses.ts. */
+body:not(:is(.SL_OverlayFullscreen, #__sl_never.__sl_never.__sl_never))
   #SpicyLyrics_FullscreenButton {
   scale: 1.25;
 }
@@ -962,8 +964,9 @@ sl-generic-modal.SpicyLyricsModal .sl-modal .sl-modal-container {
 }
 
 
-.Root.global-nav :is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) > header,
-.Root.global-nav :is(.Root__main-view, :where(#main-view)):has(#SpicyLyricsPage) > .main-topBar-container {
+/* Body class instead of :has(#SpicyLyricsPage); same specificity. See utils/pageStateClasses.ts. */
+:is(.SL_PageInMainView, #__sl_never) .Root.global-nav :is(.Root__main-view, :where(#main-view)) > header,
+:is(.SL_PageInMainView, #__sl_never) .Root.global-nav :is(.Root__main-view, :where(#main-view)) > .main-topBar-container {
   display: none !important;
 }
 

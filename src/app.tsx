@@ -68,6 +68,7 @@ import { IsPIP, OpenPopupLyrics, ClosePopupLyrics } from "./components/Utils/Pop
 import { GetNPVCardElement, GetNPVElement, GetNPVObserverRoot, initNPVLyrics } from "./components/Utils/NPVLyrics.ts";
 import ReactDOM from "react-dom/client";
 import { runThemeMatcher } from "./utils/themeMatcher.ts";
+import "./utils/pageStateClasses.ts";
 import { guardSpicetifyScrollingFix } from "./utils/scrollFixGuard.ts";
 import "./utils/settings.ts";
 import SLToaster from "./components/ReactComponents/SLToaster.tsx";

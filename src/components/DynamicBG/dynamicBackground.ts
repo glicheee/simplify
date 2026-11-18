@@ -152,6 +152,28 @@ function setMotionTrack(uri: string, data: AudioAnalysisData | null) {
   motionTrack = { uri, model: data ? new TrackMotion(data) : null };
 }
 
+// The backgrounds drift slowly, so above ~60 fps extra frames look the same but
+// each one repaints the page and every backdrop-filter over it. On high-refresh
+// displays render them on every Nth frame (an even divisor of the refresh rate),
+// while the lyrics keep the full frame rate.
+const BG_TARGET_FPS = 60;
+let bgFrameIndex = 0;
+let bgFrameStride = 1;
+let bgLastTimestamp: number | null = null;
+let bgFrameDelta = 1000 / 60;
+
+function shouldRenderBackground(timestamp: number): boolean {
+  if (bgLastTimestamp !== null) {
+    const delta = timestamp - bgLastTimestamp;
+    // Smoothed frame time; ignore stalls (hidden window, long task).
+    if (delta > 0 && delta < 100) bgFrameDelta += (delta - bgFrameDelta) * 0.05;
+  }
+  bgLastTimestamp = timestamp;
+  bgFrameStride = Math.max(1, Math.round(1000 / BG_TARGET_FPS / bgFrameDelta));
+  bgFrameIndex = (bgFrameIndex + 1) % bgFrameStride;
+  return bgFrameIndex === 0;
+}
+
 onAnimationFrame((timestamp) => {
   if (KawarpMap.size === 0) return;
   let rendering = false;
@@ -159,6 +181,7 @@ onAnimationFrame((timestamp) => {
     if (runningKawarps.has(kawarp) && !suspendedKawarpKeys.has(key)) rendering = true;
   });
   if (!rendering) return;
+  if (!shouldRenderBackground(timestamp)) return;
 
   const reactive = isExperimentEnabled("musicReactiveBackground");
   if (reactive !== motionDriving) handOverClock(reactive);

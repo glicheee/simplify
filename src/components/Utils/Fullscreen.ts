@@ -1,4 +1,5 @@
 import { GetCurrentLyricsContainerInstance } from "../../utils/Lyrics/Applyer/CreateLyricsContainer.ts";
+import { syncPageStateClasses } from "../../utils/pageStateClasses.ts";
 import { SyncNoLyricsLayout } from "../../utils/Lyrics/LyricsNotice.ts";
 import { ResetLastLine } from "../../utils/Scrolling/ScrollToActiveLine.ts";
 import { $currentLyricsData } from "../../utils/stores.ts";
@@ -389,6 +390,7 @@ function Open(skipDocumentFullscreen: boolean = false, moveElement: boolean = tr
     // Handle DOM changes
     if (moveElement) TransferElement(SpicyPage, Root);
     SpicyPage.classList.add("Fullscreen");
+    syncPageStateClasses();
 
     // Hide the main element
     if (mainElement && moveElement) {
@@ -524,6 +526,7 @@ function finishClose(SpicyPage: HTMLElement, transfer: boolean) {
     }
   }
   SpicyPage.classList.remove("Fullscreen", "frame_F_Exit");
+  syncPageStateClasses();
   clearNativeChromeInsets(SpicyPage);
 
   // Compact mode only exists in fullscreen. Its styles don't depend on the
@@ -570,6 +573,7 @@ function Close(isPip: boolean = false): Promise<boolean> {
 
   if (isPip) {
     SpicyPage.classList.remove("Fullscreen");
+    syncPageStateClasses();
 
     ResetLastLine();
 
@@ -634,6 +638,7 @@ function CloseImmediately() {
 
   if (IsPIP) {
     SpicyPage.classList.remove("Fullscreen");
+    syncPageStateClasses();
     CleanupMediaBox();
     CleanUpNowBarComponents();
     Global.Event.evoke("fullscreen:exit", null);
