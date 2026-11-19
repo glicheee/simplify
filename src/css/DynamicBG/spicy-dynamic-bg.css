@@ -119,17 +119,25 @@ div.main-nowPlayingView-contextItemInfo:has(.main-trackInfo-container)::after,
    any DOM change. The enhancement is its parent's first child.
    Only wrappers of a Canvas (video, or the image Canvas variant) lose their
    overlays. Matching any img also caught the album cover, whose pseudo-elements
-   themes build on (e.g. Spotify Spice's vinyl record). */
-:is(.main-nowPlayingView-nowPlayingWidget, .NowPlayingView, aside) :is(.main-nowPlayingView-coverArtVisualEnhancement ~ *, .main-nowPlayingView-coverArtVisualEnhancement *, .main-nowPlayingView-coverArtVisualEnhancement ~ * *):not(.main-nowPlayingView-coverArtVisualEnhancement):is(:has(video, .main-nowPlayingView-canvasVisualEnhancement img), .main-nowPlayingView-canvasVisualEnhancement:has(img), .main-nowPlayingView-canvasVisualEnhancement :has(img)):not(.main-image-image.cover-art-image)::before,
-:is(.main-nowPlayingView-nowPlayingWidget, .NowPlayingView, aside) :is(.main-nowPlayingView-coverArtVisualEnhancement ~ *, .main-nowPlayingView-coverArtVisualEnhancement *, .main-nowPlayingView-coverArtVisualEnhancement ~ * *):not(.main-nowPlayingView-coverArtVisualEnhancement):is(:has(video, .main-nowPlayingView-canvasVisualEnhancement img), .main-nowPlayingView-canvasVisualEnhancement:has(img), .main-nowPlayingView-canvasVisualEnhancement :has(img)):not(.main-image-image.cover-art-image)::after,
+   themes build on (e.g. Spotify Spice's vinyl record).
+   The sibling test comes last in the compound on purpose: Blink checks the parts
+   in order, and testing "follows the enhancement" first scans every earlier
+   sibling of every ancestor, which across a long Queue list costs hundreds of
+   milliseconds per style recalc. Order inside a compound changes neither what
+   matches nor specificity.
+   :where(.SL_NPVCover) is on <html> exactly while a cover element exists (see
+   utils/npvCoverGate.ts). These rules can't match without one, and the prefix
+   lets Blink skip them for the rest of the panel; it adds no specificity. */
+:where(.SL_NPVCover) :is(.main-nowPlayingView-nowPlayingWidget, .NowPlayingView, aside) :not(.main-nowPlayingView-coverArtVisualEnhancement):is(:has(video, .main-nowPlayingView-canvasVisualEnhancement img), .main-nowPlayingView-canvasVisualEnhancement:has(img), .main-nowPlayingView-canvasVisualEnhancement :has(img)):not(.main-image-image.cover-art-image):is(.main-nowPlayingView-coverArtVisualEnhancement ~ *, .main-nowPlayingView-coverArtVisualEnhancement *, .main-nowPlayingView-coverArtVisualEnhancement ~ * *)::before,
+:where(.SL_NPVCover) :is(.main-nowPlayingView-nowPlayingWidget, .NowPlayingView, aside) :not(.main-nowPlayingView-coverArtVisualEnhancement):is(:has(video, .main-nowPlayingView-canvasVisualEnhancement img), .main-nowPlayingView-canvasVisualEnhancement:has(img), .main-nowPlayingView-canvasVisualEnhancement :has(img)):not(.main-image-image.cover-art-image):is(.main-nowPlayingView-coverArtVisualEnhancement ~ *, .main-nowPlayingView-coverArtVisualEnhancement *, .main-nowPlayingView-coverArtVisualEnhancement ~ * *)::after,
 /* Same reach from the stable test id: Spotify 1.3.x paints its dark canvas
    gradients here, which cut a hard edge across the dynamic background. The
    Canvas container is the enhancement's next sibling, while the album cover is
    inside the enhancement, so there only a video counts. */
-:is(.NowPlayingView, aside) :is([data-testid="track-visual-enhancement"] ~ *, [data-testid="track-visual-enhancement"] ~ * *):has(video, img)::before,
-:is(.NowPlayingView, aside) :is([data-testid="track-visual-enhancement"] ~ *, [data-testid="track-visual-enhancement"] ~ * *):has(video, img)::after,
-:is(.NowPlayingView, aside) [data-testid="track-visual-enhancement"] *:has(video)::before,
-:is(.NowPlayingView, aside) [data-testid="track-visual-enhancement"] *:has(video)::after {
+:where(.SL_NPVCover) :is(.NowPlayingView, aside) :has(video, img):is([data-testid="track-visual-enhancement"] ~ *, [data-testid="track-visual-enhancement"] ~ * *)::before,
+:where(.SL_NPVCover) :is(.NowPlayingView, aside) :has(video, img):is([data-testid="track-visual-enhancement"] ~ *, [data-testid="track-visual-enhancement"] ~ * *)::after,
+:where(.SL_NPVCover) :is(.NowPlayingView, aside) [data-testid="track-visual-enhancement"] *:has(video)::before,
+:where(.SL_NPVCover) :is(.NowPlayingView, aside) [data-testid="track-visual-enhancement"] *:has(video)::after {
   display: none !important;
 }
 

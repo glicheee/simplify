@@ -69,6 +69,7 @@ import { GetNPVCardElement, GetNPVElement, GetNPVObserverRoot, initNPVLyrics } f
 import ReactDOM from "react-dom/client";
 import { runThemeMatcher } from "./utils/themeMatcher.ts";
 import "./utils/pageStateClasses.ts";
+import "./utils/npvCoverGate.ts";
 import { guardSpicetifyScrollingFix } from "./utils/scrollFixGuard.ts";
 import "./utils/settings.ts";
 import SLToaster from "./components/ReactComponents/SLToaster.tsx";
