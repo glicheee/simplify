@@ -1,0 +1,25 @@
+/* focus-cover:start */
+/* Focus Mode startup cover. This file is loaded with Spotify's own interface, before
+   any extension runs, so normal Spotify never shows while Focus Mode is opening.
+   Spicy Lyrics lifts it (html.SL_FocusCoverOff) once Focus Mode is on screen, or
+   straight away when Focus Mode is turned off. If Spicy Lyrics never loads, it fades
+   by itself after 12 s so Spotify stays usable. */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  background: #0a0a0a;
+  pointer-events: none;
+  animation: sl-focus-cover-failsafe 0.6s ease 12s forwards;
+}
+html.SL_FocusCoverOff::after {
+  opacity: 0;
+  visibility: hidden;
+  animation: none;
+  transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+}
+@keyframes sl-focus-cover-failsafe {
+  to { opacity: 0; visibility: hidden; }
+}
+/* focus-cover:end */

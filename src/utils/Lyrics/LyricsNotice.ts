@@ -5,6 +5,7 @@ import { SyncNowBarSide } from "../../components/Utils/NowBar.ts";
 import { BuildBugReport, CopyText, DISCORD_INVITE_URL } from "../BugReport.ts";
 import { IsQueueOpen } from "../../components/Utils/QueueView.ts";
 import { $showNoLyricsNotice } from "../stores.ts";
+import { $focusActive, $focusLyricsShown } from "../FocusMode/state.ts";
 
 type NoticeCopy = {
   title: string;
@@ -112,6 +113,8 @@ export function SetShownNotice(descriptor: string | null): void {
 }
 
 function shouldHideLyricsArea(): boolean {
+  // Focus Mode shows the cover on its own until the user turns the lyrics on.
+  if (PageContainer && $focusActive.get() && !$focusLyricsShown.get() && !IsQueueOpen()) return true;
   if (!shownNotice || !PageContainer) return false;
   // The open queue takes the lyrics column, so the column stays.
   if (IsQueueOpen()) return false;

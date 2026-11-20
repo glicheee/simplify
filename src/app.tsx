@@ -63,6 +63,7 @@ import "./css/PopupDock.css";
 import "./css/PortraitFullscreen.css";
 import "./css/PlayerBelowCover.css";
 import "./css/GroupedViewControls.css";
+import "./css/FocusMode.css";
 import { showUpdatedDialog } from "./components/ReactComponents/UpdateDialog.tsx";
 import { IsPIP, OpenPopupLyrics, ClosePopupLyrics } from "./components/Utils/PopupLyrics.ts";
 import { GetNPVCardElement, GetNPVElement, GetNPVObserverRoot, initNPVLyrics } from "./components/Utils/NPVLyrics.ts";
@@ -81,6 +82,8 @@ import App from "./utils/app.ts";
 import { initSession } from "./utils/SessionManager/index.ts";
 import { jitter } from "./utils/jitter.ts";
 import { StartExperimentOverridesSync } from "./utils/experiments.ts";
+import { initFocusMode } from "./utils/FocusMode/index.ts";
+import { $focusActive } from "./utils/FocusMode/state.ts";
 import { getRemoteConfig, StartRemoteConfigSync } from "./utils/remoteConfig.ts";
 
 async function main() {
@@ -1125,11 +1128,20 @@ async function main() {
 
   Hometinue();
 
+  initFocusMode({
+    openCinema: () => {
+      if (Spicetify.Platform.History.location?.pathname !== "/SpicyLyrics") Session.Navigate({ pathname: "/SpicyLyrics" });
+      openFullscreenOncePageMounts(true);
+    },
+  });
+
   runThemeMatcher();
 
   setTimeout(() => {
     Spicetify.Keyboard.registerImportantShortcut(Spicetify.Keyboard.KEYS.ESCAPE, async () => {
       if (IsPIP) return;
+      // In Focus Mode, Esc only closes its panels (handled by Focus Mode itself).
+      if ($focusActive.get()) return;
       if (Fullscreen.CinemaViewOpen && (await Fullscreen.Close())) {
         Session.GoBackFrom("/SpicyLyrics");
       }

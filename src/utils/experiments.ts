@@ -84,6 +84,15 @@ export type Experiment = {
 
 export const EXPERIMENTS = [
   {
+    id: "focusMode",
+    category: "player",
+    label: "Focus Mode",
+    description:
+      "Spotify opens into a calm cover view. Ctrl+K search, Ctrl+B library, L lyrics, Ctrl+Shift+F back to normal Spotify. Disable to open Spotify normally.",
+    default: true,
+    pageClass: "Exp_FocusMode",
+  },
+  {
     id: "newProgressBarStyling",
     category: "player",
     label: "New SliderBar Styling",
