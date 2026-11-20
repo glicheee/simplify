@@ -288,7 +288,7 @@ export default function SettingsPanel() {
     <div className="sl-sp" ref={rootRef}>
       <nav className="sl-sp-sidebar" aria-label="Settings sections">
         <div className="sl-sp-brand">
-          <span className="sl-sp-brand-line">Spicy Lyrics</span>
+          <span className="sl-sp-brand-line">Simplify</span>
           <h1 className="sl-sp-title">Settings</h1>
         </div>
 

@@ -129,9 +129,9 @@ export function BugReportPane() {
       <div className="sl-sp-bug-fineprint">
         <p>No account details, user IDs or tokens are included.</p>
         <p>
-          Not in the server yet?{" "}
+          Paste it into a new issue:{" "}
           <button type="button" className="sl-sp-bug-join-link" onClick={() => window.open(DISCORD_INVITE_URL, "_blank")}>
-            Join here
+            Simplify on GitHub
           </button>
         </p>
       </div>

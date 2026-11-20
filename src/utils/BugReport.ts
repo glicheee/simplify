@@ -29,7 +29,8 @@ import { $npvLyricsExpanded, $npvLyricsOpen, $romanization } from "./uiState.ts"
  * one Discord message.
  */
 
-export const DISCORD_INVITE_URL = "https://discord.com/invite/uqgXU5wh8j";
+// Simplify: problems go to Simplify's own issue tracker, not the original's Discord.
+export const DISCORD_INVITE_URL = "https://github.com/glicheee/simplify/issues";
 export const DISCORD_BUGS_URL = "https://discord.com/channels/1369992682214264993/1370023518313644193";
 
 // Discord's limit is 2,000 characters; the rest is headroom for the user's own text.

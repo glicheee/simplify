@@ -18,6 +18,7 @@ import { HideLyricsSkeleton, IsLyricsSkeletonEnabled, ShowLyricsSkeleton } from 
 import { onExperimentChange } from "../experiments.ts";
 import { getRemoteConfig } from "../remoteConfig.ts";
 import { ClearPinnedCredits } from "./Applyer/Credits/PinnedCredits.ts";
+import { fetchLrclibLyrics } from "./Backup/lrclib.ts";
 
 const lyricsLogger = new Logger("Lyrics Pipeline");
 const lyricsCacheLogger = new Logger("Lyrics Cache");
@@ -105,7 +106,7 @@ export function GetLastLyricsFailure(uri: string | undefined): LyricsFetchFailur
 }
 
 /** Which stage last served lyrics, for the bug report: a cached copy is the usual suspect. */
-let lastAnswer: { uri: string; from: "already loaded" | "Local DB" | "cache" | "API" } | null = null;
+let lastAnswer: { uri: string; from: "already loaded" | "Local DB" | "cache" | "API" | "LRCLIB" } | null = null;
 
 /** Where `uri`'s lyrics came from, or `null` if it hasn't been served lyrics. */
 export function GetLyricsAnsweredFrom(uri: string | undefined): string | null {
@@ -206,7 +207,11 @@ export default async function fetchLyrics(uri: string): Promise<FetchLyricsResul
   $currentlyFetching.set(true);
 
   try {
-    const result = await runFetchLyrics(uri);
+    let result = await runFetchLyrics(uri);
+    if (result && typeof result[0] === "string" && BACKUP_AFTER.has(result[0])) {
+      const backup = await tryBackupLyrics(uri);
+      if (backup) result = [backup, 200];
+    }
     // Stamp the result with the uri it was requested for, so a late arrival can
     // be told apart from a result for the track that's playing now.
     return result ? [result[0], result[1], uri] : null;
@@ -218,6 +223,48 @@ export default async function fetchLyrics(uri: string): Promise<FetchLyricsResul
       $currentlyFetching.set(false);
     }
   }
+}
+
+/** Outcomes of the main lyrics service after which the LRCLIB backup is tried. */
+const BACKUP_AFTER: ReadonlySet<string> = new Set([
+  "lyrics-not-found",
+  "service-unavailable",
+  "status-not-200",
+  "rate-limited",
+  "unknown-error",
+]);
+
+/**
+ * Line-timed lyrics from LRCLIB for the playing track, when the main service had
+ * none or could not be reached. Only the track's title, artist, album and length
+ * are sent. Not cached, so the main service is asked again next time.
+ */
+async function tryBackupLyrics(uri: string): Promise<object | null> {
+  const item: any = Spicetify.Player.data?.item;
+  if (!item || item.uri !== uri || !uri.startsWith("spotify:track:")) return null;
+  const meta = item.metadata ?? {};
+  const title = item.name ?? meta.title;
+  const artist = item.artists?.[0]?.name ?? meta.artist_name;
+  if (!title || !artist) return null;
+  const durationMs = Number(item.duration?.milliseconds ?? meta.duration ?? 0);
+  const lyrics: any = await fetchLrclibLyrics({
+    title,
+    artist,
+    album: item.album?.name ?? meta.album_title ?? "",
+    durationS: durationMs / 1000,
+  });
+  if (!lyrics || isStaleFetch(uri)) return null;
+  lyrics.uri = uri;
+  try {
+    await ProcessLyrics(lyrics);
+  } catch (error) {
+    lyricsLogger.warn("Backup lyrics processing failed", error);
+  }
+  lastAnswer = { uri, from: "LRCLIB" };
+  $currentLyricsData.set(JSON.stringify(lyrics));
+  presentLyrics(lyrics);
+  lyricsLogger.debug("Showing LRCLIB backup lyrics", uri);
+  return { ...lyrics, fromCache: false };
 }
 
 async function runFetchLyrics(uri: string): Promise<[object | string, number] | null> {

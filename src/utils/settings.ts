@@ -25,7 +25,7 @@ export function openSettingsPanel() {
 }
 
 export function registerSettingsMenu(icon: string) {
-  const name = "Spicy Lyrics Settings";
+  const name = "Simplify Settings";
   const itemId = "SpicyLyricsSettingsMenuItem";
   const profileSelector = '[data-testid="user-widget-link"]';
   const menuSelector = '#context-menu ul[role="menu"]';

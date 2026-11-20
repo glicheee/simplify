@@ -13,9 +13,9 @@ interface Link {
 }
 
 const LINKS: Link[] = [
-  { label: "Website", url: "https://spicylyrics.org" },
-  { label: "Discord", url: "https://discord.com/invite/uqgXU5wh8j", brand: "88, 101, 242" },
-  { label: "Ko-fi", url: "https://ko-fi.com/spikerko", brand: "255, 94, 138" },
+  { label: "Simplify on GitHub", url: "https://github.com/glicheee/simplify" },
+  { label: "Original: Spicy Lyrics", url: "https://spicylyrics.org" },
+  { label: "Support the original author", url: "https://ko-fi.com/spikerko", brand: "255, 94, 138" },
 ];
 
 /** "checking" until the fetch lands; "unknown" if it never does. */

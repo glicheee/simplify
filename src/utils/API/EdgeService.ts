@@ -30,6 +30,9 @@ function versionHeader(): Record<string, string> {
   // Same source as $spicyLyricsVersion, read here to avoid importing stores.
   return {
     "SpicyLyrics-Version": (window as any)._spicy_lyrics_metadata?.LoadedVersion ?? ProjectVersion,
+    // Simplify identifies itself (same value as SIMPLIFY_CLIENT_HEADER; this module
+    // imports nothing from src/, see CLAUDE.md).
+    "Simplify-Client": "https://github.com/glicheee/simplify",
   };
 }
 

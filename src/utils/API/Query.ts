@@ -1,4 +1,5 @@
 import Defaults from "../../components/Global/Defaults.ts";
+import { SIMPLIFY_CLIENT_HEADER } from "../../simplify.ts";
 import Session from "../../components/Global/Session.ts";
 import Logger from "../Logger.ts";
 import { getRemoteConfig } from "../remoteConfig.ts";
@@ -121,6 +122,7 @@ export async function Query(
           "X-mode": "2",
           "Content-Type": "application/json",
           "SpicyLyrics-Version": clientVersion?.Text ?? "",
+          ...SIMPLIFY_CLIENT_HEADER,
           ...headers,
         },
         body: JSON.stringify({

@@ -235,7 +235,7 @@ export function BuildLyricsNotice(
     actions.appendChild(copyButton);
   }
 
-  const discord = makeButton(ICONS.chat, "Get help on Discord");
+  const discord = makeButton(ICONS.chat, "Report it on GitHub");
   discord.addEventListener("click", () => window.open(DISCORD_INVITE_URL, "_blank"), { signal });
   actions.appendChild(discord);
 

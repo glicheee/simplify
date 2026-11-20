@@ -1,32 +1,35 @@
 [
   {
-    "name": "Spicy Lyrics",
-    "description": "Spicy Lyrics is a better lyrics experience (compared to Spotify Lyrics) for Spotify. It brings word-by-word lyrics (karaoke style), beautiful animations, and more. Come and give it a try!",
-    "preview": "./previews/V3latest_smallcard_preview.webp",
-    "main": "./builds/spicy-lyrics.mjs",
+    "name": "Simplify",
+    "description": "A calm Focus Mode for Spotify with word-by-word lyrics: the cover on its own, search (Ctrl+K), your library (Ctrl+B) and lyrics (L) on shortcuts, all animated. A modified version of Spicy Lyrics by Spikerko.",
+    "preview": "./previews/simplify.webp",
+    "main": "./builds/simplify.js",
     "readme": "README.md",
     "branch": "main",
-    "authors": [{ "name": "Spikerko", "url": "https://github.com/Spikerko" }],
-    "tags": [
-      "lyrics",
-      "spicy-lyrics",
-      "word-to-word-lyrics",
-      "karaoke",
-      "spicetify",
-      "syllable-lyrics",
-      "syllable",
-      "smooth",
-      "beautiful",
-      "spicy",
-      "animated",
-      "background",
-      "backgrounds",
-      "dynamic",
-      "pretty",
-      "romanization",
-      "romaji",
-      "pinyin",
-      "customizable"
-    ]
+    "authors": [
+      { "name": "glicheee", "url": "https://github.com/glicheee" },
+      { "name": "Spikerko (original Spicy Lyrics)", "url": "https://github.com/Spikerko" }
+    ],
+    "tags": ["lyrics", "focus", "minimal", "karaoke", "word-by-word", "animated", "search", "simplify"]
+  },
+  {
+    "name": "Simplify Glass",
+    "description": "A slow, blurred copy of the album cover behind the whole app, with see-through panels. Built to stay light: no live blur, 20 redraws a second, pauses when Spotify is hidden.",
+    "preview": "./previews/simplify-glass.webp",
+    "main": "./builds/simplify-glass.js",
+    "readme": "README.md",
+    "branch": "main",
+    "authors": [{ "name": "glicheee", "url": "https://github.com/glicheee" }],
+    "tags": ["background", "glass", "blur", "animated", "simplify"]
+  },
+  {
+    "name": "Simplify Polish",
+    "description": "Accent color from the album cover, a softer and rounder look, and fewer podcast rows on Home.",
+    "preview": "./previews/simplify-polish.webp",
+    "main": "./builds/simplify-polish.js",
+    "readme": "README.md",
+    "branch": "main",
+    "authors": [{ "name": "glicheee", "url": "https://github.com/glicheee" }],
+    "tags": ["accent", "theme", "rounded", "declutter", "simplify"]
   }
 ]
